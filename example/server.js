@@ -1,19 +1,15 @@
-
 var iotf = require("ibmiotf");
 var express=require('express');
 var app = express();
 const bodyParser=require('body-parser');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-
 var port=3000;
  app.get('/',function(req,res){
      res.sendFile( __dirname+ '/index.html');
  });
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.use(bodyParser.json());
-
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/'));
 app.use(function(req, res, next)
@@ -30,27 +26,27 @@ var config1  = {
  "auth-token" : "<Your-Device-Token>"
 }
 var config2  = {
- "org" : "hdlxmj",
- "id" : "Truck2",
- "type" : "thing",
+ "org" : "<Your-Org-ID>",
+ "id" : "<Your-Device-ID>",
+ "type" : "<Your-Device-Type>",
  "auth-method" : "token",
- "auth-token" : "DigitalSummit@2017"
+ "auth-token" : "<Your-Device-Token>"
 }
 var config3  = {
- "org" : "hdlxmj",
- "id" : "Truck3",
- "type" : "thing",
+ "org" : "<Your-Org-ID>",
+ "id" : "<Your-Device-ID>",
+ "type" : "<Your-Device-Type>",
  "auth-method" : "token",
- "auth-token" : "DigitalSummit@2017"
+ "auth-token" : "<Your-Device-Token>"
 }
 var config4  = {
- "org" : "hdlxmj",
- "id" : "Truck4",
- "type" : "thing",
+ "org" : "<Your-Org-ID>",
+ "id" : "<Your-Device-ID>",
+ "type" : "<Your-Device-Type>",
  "auth-method" : "token",
- "auth-token" : "DigitalSummit@2017"
+ "auth-token" : "<Your-Device-Token>"
 }
-console.log(`server running at${port}`)
+console.log(`Server is running at${port}`)
 
 io.on('connection', function (socket) {
 
@@ -62,10 +58,8 @@ io.on('connection', function (socket) {
 			console.log("Device1 is connected...");       
 			deviceClient1.publish('myevt1', 'json', data, 2);
 			deviceClient1.disconnect()
-			
 		}); 
 	});
-	
 	socket.on('truck2Data', function(data) {
 		console.log("Data : "+JSON.stringify(data));		
 		var deviceClient2 = new iotf.IotfDevice(config2);
@@ -76,7 +70,6 @@ io.on('connection', function (socket) {
 			deviceClient2.disconnect()
 		}); 
 	});
-	
 	socket.on('truck3Data', function(data) {
 		console.log("Data : "+JSON.stringify(data));		
 		var deviceClient3 = new iotf.IotfDevice(config3);
@@ -87,7 +80,6 @@ io.on('connection', function (socket) {
 			deviceClient3.disconnect()
 		}); 
 	});
-	
 	socket.on('truck4Data', function(data) {
 		console.log("Data : "+JSON.stringify(data));	
 		console.log(config4)
@@ -99,35 +91,6 @@ io.on('connection', function (socket) {
 			deviceClient4.disconnect()
 		}); 
 	});
-	
 });
-
-/* app.post("/get",function(req,res)
-{
-	var speed=req.body.speed;
-	var tyrepres=req.body.pressure;
-	var lat=req.body.latitude;
-	var long=req.body.longitude;
-	console.log("ha"+speed);
-	var obj={
-		"speed":speed,
-		"pre":pres,
-		"lat":lat,
-		"long":long
-	}
-	console.log("In server side...."+obj);
-	//res.json(obj);
-	/*var deviceClient = new iotf.IotfDevice(config);
-	deviceClient.connect();
-
-    deviceClient.on('connect', function(){
-        console.log("connected");       
-        deviceClient.publish('myevt', 'json', obj, 2);
-    });
-	
-	
-	
-})
- */
 server.listen(port);
 	
